@@ -2,11 +2,11 @@ var http = require('http'),
 	fs = require('fs'),
 	path = require('path'),
 	url = require('url'),
-	Twitter = require('twitter'),
+//	Twitter = require('twitter'),
 	events = require('events'),
 	insta = require('instagram-node').instagram(),
-	tweets;
-	// credentials = require('twittercreds.js');
+	tweets,
+	key = require('./key.js');
 
 function requestHandler(request, response){
 	var reqName = path.basename(request.url) || 'index.html';
@@ -30,17 +30,11 @@ function requestHandler(request, response){
 http.createServer(requestHandler).listen(1337);
 console.log('Server up and running');
 
-var client = new Twitter({
-	consumer_key: '0NE1Xoy4LOwiRuPBQYOZxAdsy',
-	consumer_secret: 'FwlWrejjFsJzh57JSd1OXlVFi2djcghERQNhHWsYZkgCLKUVxZ',
-	access_token_key: '281746499-SfqRkJFWWD447WgouP184FlS1EkJ6CTJajYT5G0A',
-	access_token_secret: 'uzLRrD1ZAi2UgNk12kK7F6HQq4AXZNW8rG8mbsR2z6WsI'
-});
 
 function catchFish(){
 	var type = 'search/tweets';
 	var params = {q: 'fish'};
-	client.get(type, params, function(error, data, response){
+	key.get(type, params, function(error, data, response){
 		for(var i = 0; i < data.statuses.length; i += 1) {
 			console.log(data.statuses[i].text);
 			tweets = data.statuses[i].text;
