@@ -4,7 +4,7 @@ var http = require('http'),
 	url = require('url'),
     Twitter = require('twitter'),
 	events = require('events'),
-    Insta = require('instagram-node').instagram(),
+    ig = require('instagram-node').instagram(),
 	tweets,
     keyChain = require('./key.js');
 
@@ -38,13 +38,8 @@ var twitterKeys = new Twitter({
 	access_token_secret: keyChain.access_token_secret
 }); //Rory's Twitter keys
 
-var instaKeys = new Insta({
-    client_id: keyChain.client_id,
-    client_secret: keyChain.client_secret
-}); //anit's instagram keys
 
-
-
+//twitter
 function catchFish(){
 	var type = 'search/tweets';
 	var params = {q: 'fish'};
@@ -57,10 +52,12 @@ function catchFish(){
 }
 
 
-//insta
+//instagram
+ig.use({ 
+    client_id: keyChain.client_id,
+    client_secret: keyChain.client_secret 
+});
 
-
-
-
-
-
+ig.tag_media_recent('coding', function(err, medias, pagination, remaining, limit) {
+    console.log(medias);
+});
