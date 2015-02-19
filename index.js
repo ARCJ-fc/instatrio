@@ -18,6 +18,10 @@ function requestHandler(request, response){
 			if (!err) {
 				response.writeHead(200, {'Content-Type': 'text/html'});
 				response.write(data);
+               
+                //instagram
+                response.write(JSON.stringify(medias));
+                
 				response.end();
 			} else {
 				response.writeHead(404, {'Content-Type': 'text/html'});
@@ -59,5 +63,7 @@ ig.use({
 });
 
 ig.tag_media_recent('coding', function(err, medias, pagination, remaining, limit) {
-    console.log(medias);
+    for (var i = 0; i < 10; i++) {
+        console.log(medias[i].images.standard_resolution.url);
+    }
 });
