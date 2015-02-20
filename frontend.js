@@ -12,15 +12,13 @@
 //	
 //}
 
-//instagram 
+ 
 $.ajax({
 	type: 'GET', 
-	url: 'http://localhost:1337/tweets',
+	url: 'http://localhost:1337/ourtweets',
 	success: function(data){
-		$(".instalist").each(function(i) {
-        $(this).text("feed:" + tweets);
-        });
-	};
+		$("#tweetdiv").prepend('<p>' + data + '</p>');
+	}
 });
 
 
