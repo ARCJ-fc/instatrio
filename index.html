@@ -6,13 +6,22 @@
 </head>
 <body>
     <h1>Hello guys!!</h1>
+    <button id="tweetbutton"></button>
     <div id="tweetdiv"></div>
-    <ul class="tweetlist">
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="frontend.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+    $("#tweetbutton").on('click', function(){
+        console.log("button is ready");
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:1337/ourtweets',
+            success: function(data){
+                $("#tweetdiv").prepend('<p>' + data + '</p>');
+                }
+            });
+        });
+
+    </script>
+<!--    <script src="frontend.js"></script>-->
 </body>
 </html>

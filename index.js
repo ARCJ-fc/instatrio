@@ -6,14 +6,16 @@ var http = require('http'),
 	events = require('events'),
     ig = require('instagram-node').instagram(),
 	tweets,
+    tweetsArray = [],
     keyChain = require('./key.js'),
     mongojs = require('mongojs');
 
 function requestHandler(request, response){
 	var reqName = path.basename(request.url) || 'index.html';
 	if (reqName === 'ourtweets') {
-		response.writeHead(200, {'Content-Type': 'text/plain'});
-		response.write(tweets);
+		response.writeHead(200, {'content-Type': 'application/javascript'});
+		response.write(tweetsArray);
+        response.end();
 	} else {
 		fs.readFile(__dirname + '/' + 'index.html', function(err, data){
 			if (!err) {
@@ -21,7 +23,7 @@ function requestHandler(request, response){
 				response.write(data);
                
                 //instagram
-                response.write(JSON.stringify(medias));
+//                response.write(JSON.stringify(medias));
                 
 				response.end();
 			} else {
@@ -48,16 +50,18 @@ var twitterObj = new Twitter({
 function catchFish(){
 	var type = 'search/tweets';
 	var params = {q: 'fish'};
-	twitterObj.get(type, params, fishGutter)
-	}
+	twitterObj.get(type, params, fishGutter);
 }
 
-//
-//function fishGutter(error, data, response){
-//		for(var i = 0; i < data.statuses.length; i += 1) {
-//			console.log(data.statuses[i].text);
-//			tweets = data.statuses[i].text;
-//		}
+
+
+function fishGutter(error, data, response){
+		for(var i = 0; i < data.statuses.length; i++) {
+			console.log(data.statuses[i].text);
+			tweets = data.statuses[i].text;
+            tweetsArray.push(tweets);
+		}
+}
 
 //instagram
 ig.use({ 
@@ -72,47 +76,45 @@ ig.tag_media_recent('coding', function(err, medias, pagination, remaining, limit
 });
 
 
-
-
 //Database ======================================================//
-var db = ('mongodb://lottie-em:arcjrules@ds039281.mongolab.com:39281/arcj', ["tweetsImages", "instaImages"]);
-
-twitObjs = {
-    name: searchTerm.toLowerCase,
-    expiryDate:
-    twArray: []
-}
-    {
-        name: "charlotte",
-        url: "www.yolo.jpeg",
-        post_link: "www.yolo.com/post1",
-        hashtag: "yolo"
-    }
-
-searchTerm = 'people';
-urlify
-
-searchedThings = ["confectionary", "articleofclothing", "cake", "pastries", "departmentstores"];
-
-function prevSearches(searching) {
-    if(searchedThings.indexOf(searching.toLowerCase === -1){
-       searchedThings.push(searching.toLowerCase);
-    } else {
-        databaseQuery(searchTerm.toLowerCase);
-    }
-function databaseQuery(findme){
-    db.twitterImages.find({name: findme}, function(error, twitterImages){
-        if(err){
-          throw err;  
-        } else {
-            twitterImages.forEach(function)
-        }
-    })
-}
-
-}
-
-
-db.tweetImages.
-
-
+//var db = ('mongodb://lottie-em:arcjrules@ds039281.mongolab.com:39281/arcj', ["tweetsImages", "instaImages"]);
+//
+//twitObjs = {
+//    name: searchTerm.toLowerCase,
+//    expiryDate:
+//    twArray: []
+//}
+//    {
+//        name: "charlotte",
+//        url: "www.yolo.jpeg",
+//        post_link: "www.yolo.com/post1",
+//        hashtag: "yolo"
+//    }
+//
+//searchTerm = 'people';
+//urlify
+//
+//searchedThings = ["confectionary", "articleofclothing", "cake", "pastries", "departmentstores"];
+//
+//function prevSearches(searching) {
+//    if(searchedThings.indexOf(searching.toLowerCase === -1){
+//       searchedThings.push(searching.toLowerCase);
+//    } else {
+//        databaseQuery(searchTerm.toLowerCase);
+//    }
+//function databaseQuery(findme){
+//    db.twitterImages.find({name: findme}, function(error, twitterImages){
+//        if(err){
+//          throw err;  
+//        } else {
+//            twitterImages.forEach(function)
+//        }
+//    })
+//}
+//
+//}
+//
+//
+//db.tweetImages.
+//
+//
